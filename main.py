@@ -1,9 +1,9 @@
-from alpha_vantage.timeseries import TimeSeries
 import sys
 import os
 import pymongo
 import requests
 from pprint import pprint
+import time
 
 
 def connect_mongo():
@@ -14,8 +14,8 @@ def connect_mongo():
 
 
 def opt_update_symbols():
-    def assemble_url(market):
-        return f'https://old.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange={market}&render=download'
+    def assemble_url(_market):
+        return f'https://old.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange={_market}&render=download'
 
     symbol_pool = []
 
@@ -44,9 +44,31 @@ def opt_update_symbols():
 
 
 def opt_fetch_data():
-    app = TimeSeries()
-    data, meta_data = app.get_intraday('AAL')
-    pprint(meta_data)
+    db = connect_mongo()
+    api_key = os.environ['ALPHAVANTAGE_API_KEY']
+    symbols = db['symbol'].find()
+    overview = db['overview']
+
+    for symbol in symbols:
+        symbol_name = symbol['name']
+        check = overview.find({'Symbol': symbol_name})
+        exist = False
+
+        for i in check:
+            if i['_id']:
+                exist = True
+
+        if exist:
+            continue
+
+        url = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol_name}&apikey={api_key}"
+        r = requests.get(url)
+        record = r.json()
+
+        if record:
+            overview.insert_one(record)
+
+        time.sleep(13)
 
 
 if __name__ == '__main__':
