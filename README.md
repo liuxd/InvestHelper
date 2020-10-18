@@ -1,4 +1,4 @@
-# iCrystalBall
+# iCapitalGame
 My magic item to foresee the finance markets.
 
 ## Resources
