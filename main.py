@@ -1,17 +1,9 @@
 import sys
 import os
-import pymongo
 import requests
 from pprint import pprint
 import time
-from lib.symbol import get_symbols_from_nasdaq
-
-
-def connect_mongo():
-    mongo_conn = os.environ['MONGO_CONN']
-    conn = pymongo.MongoClient(mongo_conn)
-    db = conn['us_stock']
-    return db
+from lib.general import get_symbols_from_nasdaq, connect_mongo
 
 
 def opt_update_symbols():

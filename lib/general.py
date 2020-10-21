@@ -1,7 +1,21 @@
 import requests
+import pymongo
+import os
+
+
+def connect_mongo():
+    mongo_conn = os.environ['MONGO_CONN']
+    conn = pymongo.MongoClient(mongo_conn)
+    db = conn['us_stock']
+    return db
 
 
 def get_symbols_from_nasdaq():
+    """
+    Get symbol list from https://old.nasdaq.com/screening/company-list.aspx
+    :return: list
+    """
+
     def assemble_url(_market):
         return f'https://old.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange={_market}&render=download'
 
