@@ -1,5 +1,4 @@
-# iCapitalGame
-My magic item to foresee the finance markets.
+# iCapitalHQ
 
 ## Tech Stack
 
