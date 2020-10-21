@@ -40,3 +40,37 @@ def get_symbols_from_nasdaq():
                 symbol_pool.append({'name': symbol})
 
     return symbol_pool
+
+
+def call_fmp_api(obj, symbols, params):
+    api_key = os.environ['FMP_API_KEY']
+    url = f"https://financialmodelingprep.com/api/v3/{obj}/{symbols}?apikey={api_key}"
+
+    if params:
+        query = ''
+
+        for k, v in params.items():
+            query += '&' + k + '=' + str(v)
+
+        url += query
+
+    r = requests.get(url)
+    record = r.json()
+
+    return record
+
+
+def call_alphavintage_api(params):
+    api_key = os.environ['ALPHAVANTAGE_API_KEY']
+    url = f"https://www.alphavantage.co/query?apikey={api_key}"
+    query = ''
+
+    for k, v in params.items():
+        query += '&' + k + '=' + str(v)
+
+    url += query
+
+    r = requests.get(url)
+    record = r.json()
+
+    return record
