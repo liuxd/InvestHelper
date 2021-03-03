@@ -1,4 +1,4 @@
-# Project F
+# Invest HQ
 
 ## Tech Stack
 
