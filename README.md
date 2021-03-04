@@ -1,5 +1,3 @@
-# Invest HQ
-
 ## Tech Stack
 
 - Python
